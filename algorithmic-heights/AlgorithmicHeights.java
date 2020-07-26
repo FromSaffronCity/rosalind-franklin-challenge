@@ -5,6 +5,7 @@ import java.util.Vector;
 import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Stack;
+import java.util.Random;
 
 class AdjacencyListItem {
     public int index;
@@ -209,6 +210,7 @@ class BinaryHeap {
 
 public class AlgorithmicHeights {
     private static Scanner scanner = new Scanner(System.in);
+    private static Random random = new Random();
 
     private static int[] degreeArray(int nodes, int[][] edgeList) {
         int[] degreeArray = new int[nodes];
@@ -712,6 +714,75 @@ public class AlgorithmicHeights {
             result[0] = -1;
         }
         return result;
+    }
+
+    private static void swap(int[] array, int index_1, int index_2) {
+        int temp = array[index_1];
+        array[index_1] = array[index_2];
+        array[index_2] = temp;
+
+        return ;
+    }
+
+    private static int twoWayPartition(int[] array, int low, int high) {
+        int partition_index = high;
+
+        for(int i=high; i>low; i--) {
+            if(array[i] > array[low]) {
+                swap(array, i, partition_index);
+                partition_index--;
+            }
+        }
+        swap(array, low, partition_index);
+
+        return partition_index;
+    }
+
+    private static void threeWayPartition(int[] array) {
+        int partition_index = twoWayPartition(array, 0, array.length-1);
+
+        for(int i=0, swap_index=partition_index-1; i<partition_index; i++) {
+            while(swap_index>=0 && array[swap_index]==array[partition_index]) {
+                swap_index--;
+            }
+            if(i >= swap_index) {
+                break ;
+            }
+            if(array[i] == array[partition_index]) {
+                swap(array, i, swap_index);
+                swap_index--;
+            }
+        }
+        return ;
+    }
+
+    private static int randomizedTwoWayPartition(int[] array, int low, int high) {
+        swap(array, low, low+random.nextInt(high-low+1));
+        return twoWayPartition(array, low, high);
+    }
+
+    private static int median(int[] array, int low, int high, int k) {
+        if(low == high) {
+            return array[low];
+        }
+        int partition_index = randomizedTwoWayPartition(array, low, high);
+
+        if(partition_index == k) {
+            return array[partition_index];
+        } else if(partition_index < k) {
+            return median(array, partition_index+1, high, k);
+        } else {
+            return median(array, low, partition_index-1, k);
+        }
+    }
+
+    private static void quickSort(int[] array, int low, int high) {
+        if(low < high) {
+            int partition_index = randomizedTwoWayPartition(array, low, high);
+            quickSort(array, low, partition_index-1);
+            quickSort(array, partition_index+1, high);
+        }
+        return ;
     }
 
     public static void main(String[] args) {
