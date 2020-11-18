@@ -1,5 +1,3 @@
-package rosalind;
-
 import java.util.Scanner;
 
 public class BioinformaticsStronghold {
@@ -211,8 +209,15 @@ public class BioinformaticsStronghold {
         return (float) (homozygous_dominant*((homozygous_dominant-1)+heterozygous+homozygous_recessive)+heterozygous*(homozygous_dominant+(heterozygous-1)*0.75+homozygous_recessive*0.5)+homozygous_recessive*(homozygous_dominant+heterozygous*0.5))/((homozygous_dominant+heterozygous+homozygous_recessive)*(homozygous_dominant+heterozygous+homozygous_recessive-1));
     }
 
+    private static double calculatingExpectedOffspring(int[] genotypeCouples) {
+        return 2.0*genotypeCouples[0]+2.0*genotypeCouples[1]+2.0*genotypeCouples[2]+1.5*genotypeCouples[3]+1.0*genotypeCouples[4]+0.0*genotypeCouples[5];
+    }
+
     public static void main(String[] args) {
-        System.out.println(mortalFibonacciRabbits(scanner.nextInt(), scanner.nextInt()));
-        return ;
+        int[] array = new int[6];
+        for(int i=0; i<6; i++) {
+            array[i] = scanner.nextInt();
+        }
+        System.out.println(calculatingExpectedOffspring(array));
     }
 }
