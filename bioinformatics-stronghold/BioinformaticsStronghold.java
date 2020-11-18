@@ -258,6 +258,6 @@ public class BioinformaticsStronghold {
     }
 
     public static void main(String[] args) {
-        System.out.println(calculatingProteinMass(scanner.nextLine()));
+
     }
 }
