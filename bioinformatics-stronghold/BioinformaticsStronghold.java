@@ -28,6 +28,15 @@ public class BioinformaticsStronghold {
         return rabbitsCount[month-1];
     }
 
+    private static String transcribingDNAintoRNA(String dnaString) {
+        StringBuilder rnaString = new StringBuilder("");
+        for(int i=0; i<dnaString.length(); i++) {
+            if(dnaString.charAt(i) == 'T') rnaString.append("U");
+            else rnaString.append(dnaString.charAt(i));
+        }
+        return rnaString.toString();
+    }
+
     private static String translatingRNAintoProtein(String rnaString) {
         StringBuilder proteinString = new StringBuilder();
 
@@ -205,6 +214,41 @@ public class BioinformaticsStronghold {
         return proteinString.toString();
     }
 
+    private static String rnaSplicing(String dnaString, String[] introns) {
+        for(String intron: introns) dnaString = dnaString.replaceAll(intron, "");
+        return translatingRNAintoProtein(transcribingDNAintoRNA(dnaString));
+    }
+
+    private static double calculatingProteinMass(String proteinString) {
+        double proteinMass = 0;
+        for(int i=0; i<proteinString.length(); i++) {
+            char charAt = proteinString.charAt(i);
+            if(charAt == 'A') proteinMass += 71.03711;
+            else if(charAt == 'C') proteinMass += 103.00919;
+            else if(charAt == 'D') proteinMass += 115.02694;
+            else if(charAt == 'E') proteinMass += 129.04259;
+            else if(charAt == 'F') proteinMass += 147.06841;
+            else if(charAt == 'G') proteinMass += 57.02146;
+            else if(charAt == 'H') proteinMass += 137.05891;
+            else if(charAt == 'I') proteinMass += 113.08406;
+            else if(charAt == 'K') proteinMass += 128.09496;
+            else if(charAt == 'L') proteinMass += 113.08406;
+            else if(charAt == 'M') proteinMass += 131.04049;
+            else if(charAt == 'N') proteinMass += 114.04293;
+            else if(charAt == 'O') proteinMass += 237.14773;
+            else if(charAt == 'P') proteinMass += 97.05276;
+            else if(charAt == 'Q') proteinMass += 128.05858;
+            else if(charAt == 'R') proteinMass += 156.10111;
+            else if(charAt == 'S') proteinMass += 87.03203;
+            else if(charAt == 'T') proteinMass += 101.04768;
+            else if(charAt == 'U') proteinMass += 150.95364;
+            else if(charAt == 'V') proteinMass += 99.06841;
+            else if(charAt == 'W') proteinMass += 186.07931;
+            else if(charAt == 'Y') proteinMass += 163.06333;
+        }
+        return proteinMass;
+    }
+
     private static float mendelsFirstLaw(int homozygous_dominant, int heterozygous, int homozygous_recessive) {
         return (float) (homozygous_dominant*((homozygous_dominant-1)+heterozygous+homozygous_recessive)+heterozygous*(homozygous_dominant+(heterozygous-1)*0.75+homozygous_recessive*0.5)+homozygous_recessive*(homozygous_dominant+heterozygous*0.5))/((homozygous_dominant+heterozygous+homozygous_recessive)*(homozygous_dominant+heterozygous+homozygous_recessive-1));
     }
@@ -214,10 +258,6 @@ public class BioinformaticsStronghold {
     }
 
     public static void main(String[] args) {
-        int[] array = new int[6];
-        for(int i=0; i<6; i++) {
-            array[i] = scanner.nextInt();
-        }
-        System.out.println(calculatingExpectedOffspring(array));
+        System.out.println(calculatingProteinMass(scanner.nextLine()));
     }
 }
