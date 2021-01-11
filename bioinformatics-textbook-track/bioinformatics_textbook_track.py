@@ -24,8 +24,19 @@ def find_all_occurrences_of_a_pattern_in_a_string(pattern, genome):
     starting_positions = []
     next_starting_position = 0
 
-    while next_starting_position != -1:
-        next_starting_position = genome.find(pattern, (next_starting_position+1 if next_starting_position != 0 else 0))
+    while next_starting_position != -1 and next_starting_position < len(genome):
+        next_starting_position = genome.find(pattern, next_starting_position)
         if next_starting_position != -1:
             starting_positions.append(next_starting_position)
+            next_starting_position += 1
     return starting_positions
+
+
+def compute_the_number_of_times_a_pattern_appears_in_a_text(dna_string, pattern):
+    pattern_count = next_starting_position = 0
+    while next_starting_position != -1 and next_starting_position < len(dna_string):
+        next_starting_position = dna_string.find(pattern, next_starting_position)
+        if next_starting_position != -1:
+            pattern_count += 1
+            next_starting_position += 1
+    return pattern_count
