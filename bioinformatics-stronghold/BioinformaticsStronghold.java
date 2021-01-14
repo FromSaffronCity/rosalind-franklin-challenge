@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BioinformaticsStronghold {
@@ -257,7 +258,67 @@ public class BioinformaticsStronghold {
         return 2.0*genotypeCouples[0]+2.0*genotypeCouples[1]+2.0*genotypeCouples[2]+1.5*genotypeCouples[3]+1.0*genotypeCouples[4]+0.0*genotypeCouples[5];
     }
 
-    public static void main(String[] args) {
+    private static String findingConsensusStringAndProfileMatrix(String[] dnaStrings) {
+        /* Consensus & Profile */
+        int[][] profileMatrix = new int[4][dnaStrings[0].length()];
+        for(int i=0; i<profileMatrix.length; i++) {
+            for(int j=0; j<profileMatrix[0].length; j++) {
+                profileMatrix[i][j] = 0;
+            }
+        }
+        for(int i=0; i<dnaStrings[0].length(); i++) {
+            for(String dnaString: dnaStrings) {
+                if(dnaString.charAt(i) == 'A') {
+                    profileMatrix[0][i]++;
+                } else if(dnaString.charAt(i) == 'C') {
+                    profileMatrix[1][i]++;
+                } else if(dnaString.charAt(i) == 'G') {
+                    profileMatrix[2][i]++;
+                } else if(dnaString.charAt(i) == 'T') {
+                    profileMatrix[3][i]++;
+                }
+            }
+        }
 
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0, max=-1, index=-1; i<profileMatrix[0].length; i++) {
+            for(int j=0; j<profileMatrix.length; j++) {
+                index = (max<profileMatrix[j][i]? j: index);
+                max = (max<profileMatrix[j][i]? profileMatrix[j][i]: max);
+            }
+            stringBuilder.append((index<2? (index<1? 'A': 'C'): (index<3? 'G': 'T')));
+            max = index = -1;
+        }
+        stringBuilder.append("\n");
+        for(int i=0; i<profileMatrix.length; i++) {
+            stringBuilder.append((i<2? (i<1? "A:": "C:"): (i<3? "G:": "T:")));
+            for(int profileMatrixEntry: profileMatrix[i]) {
+                stringBuilder.append(" ").append(profileMatrixEntry);
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+        String str = "";
+        while(scanner.hasNext()) {
+            String input = scanner.nextLine();
+            if(input.charAt(0) == '>') {
+                if(!str.equals("")) {
+                    list.add(str);
+                    str = "";
+                }
+            } else {
+                str += input;
+            }
+        }
+        list.add(str);
+        String[] temp = new String[list.size()];
+        for(int i=0; i<list.size(); i++) {
+            temp[i] = list.get(i);
+        }
+        System.out.println(findingConsensusStringAndProfileMatrix(temp));
     }
 }
