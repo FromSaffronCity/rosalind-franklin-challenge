@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BioinformaticsStronghold {
@@ -300,25 +299,22 @@ public class BioinformaticsStronghold {
         return stringBuilder.toString();
     }
 
-    public static void main(String[] args) {
-        ArrayList<String> list = new ArrayList<>();
-        String str = "";
-        while(scanner.hasNext()) {
-            String input = scanner.nextLine();
-            if(input.charAt(0) == '>') {
-                if(!str.equals("")) {
-                    list.add(str);
-                    str = "";
+    private static double findingTransitionTransversionRatio(String dnaString1, String dnaString2) {
+        /* Transitions & Transversions */
+        int transitions=0, transversions=0;
+        for(int i=0; i<dnaString1.length(); i++) {
+            if(dnaString1.charAt(i) != dnaString2.charAt(i)) {
+                if((dnaString1.charAt(i)=='A' && dnaString2.charAt(i)=='G') || (dnaString1.charAt(i)=='G' && dnaString2.charAt(i)=='A') || (dnaString1.charAt(i)=='T' && dnaString2.charAt(i)=='C') || (dnaString1.charAt(i)=='C' && dnaString2.charAt(i)=='T')) {
+                    transitions++;
+                } else {
+                    transversions++;
                 }
-            } else {
-                str += input;
             }
         }
-        list.add(str);
-        String[] temp = new String[list.size()];
-        for(int i=0; i<list.size(); i++) {
-            temp[i] = list.get(i);
-        }
-        System.out.println(findingConsensusStringAndProfileMatrix(temp));
+        return (double) transitions/transversions;
+    }
+
+    public static void main(String[] args) {
+
     }
 }
