@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class BioinformaticsStronghold {
     private static Scanner scanner = new Scanner(System.in);
@@ -312,6 +313,36 @@ public class BioinformaticsStronghold {
             }
         }
         return (double) transitions/transversions;
+    }
+
+    private static String swapCharacterWithinString(String string, int charAt1, int charAt2) {
+        char[] charArray = string.toCharArray();
+        char temp = charArray[charAt1];
+        charArray[charAt1] = charArray[charAt2];
+        charArray[charAt2] = temp;
+        return new String(charArray);
+    }
+
+    private static void findingPermutations(ArrayList<String> permutations, String permutation, int low, int high) {
+        if(low == high) {
+            permutations.add(permutation);
+        } else {
+            for(int i=low; i<=high; i++) {
+                permutation = swapCharacterWithinString(permutation, low, i);
+                findingPermutations(permutations, permutation, low+1, high);
+                permutation = swapCharacterWithinString(permutation, low, i);
+            }
+        }
+    }
+
+    private static ArrayList<String> enumeratingGeneOrders(int length) {
+        ArrayList<String> permutations = new ArrayList<>();
+        StringBuilder initialPermutation = new StringBuilder("");
+        for(int i=1; i<=length; i++) {
+            initialPermutation.append(i);
+        }
+        findingPermutations(permutations, initialPermutation.toString(), 0, length-1);
+        return permutations;
     }
 
     public static void main(String[] args) {
