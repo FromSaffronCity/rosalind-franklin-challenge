@@ -40,3 +40,27 @@ def compute_the_number_of_times_a_pattern_appears_in_a_text(dna_string, pattern)
             pattern_count += 1
             next_starting_position += 1
     return pattern_count
+
+
+def implement_number_to_pattern(index, k):
+    nucleotide_bases = ['A', 'C', 'G', 'T']
+    dna_string_pattern = ""
+    for i in range(k):
+        dna_string_pattern = nucleotide_bases[index%4] + dna_string_pattern
+        index //=4
+    return dna_string_pattern
+
+
+def implement_pattern_to_number(dna_string_pattern):
+    dna_string_pattern = dna_string_pattern[::-1]
+    number = 0
+    for index in range(len(dna_string_pattern)):
+        if dna_string_pattern[index] == 'A':
+            number += (4**index)*0
+        elif dna_string_pattern[index] == 'C':
+            number += (4**index)*1
+        elif dna_string_pattern[index] == 'G':
+            number += (4**index)*2
+        elif dna_string_pattern[index] == 'T':
+            number += (4**index)*3
+    return number
